@@ -67,7 +67,7 @@ paths:
             $ref: '#/definitions/rotten_tomato.RTMovieInfo'
       summary: top search result scraped from rotten tomato
       tags:
-      - search
+      - movie
   /ping:
     get:
       consumes:
@@ -82,5 +82,5 @@ paths:
             type: string
       summary: ping example
       tags:
-      - example
+      - ping
 swagger: "2.0"

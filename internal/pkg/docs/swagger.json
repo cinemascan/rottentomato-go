@@ -14,7 +14,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "search"
+                    "movie"
                 ],
                 "summary": "top search result scraped from rotten tomato",
                 "parameters": [
@@ -54,7 +54,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "ping"
                 ],
                 "summary": "ping example",
                 "responses": {

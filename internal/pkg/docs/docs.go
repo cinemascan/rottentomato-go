@@ -26,7 +26,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "search"
+                    "movie"
                 ],
                 "summary": "top search result scraped from rotten tomato",
                 "parameters": [
@@ -66,7 +66,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "ping"
                 ],
                 "summary": "ping example",
                 "responses": {
