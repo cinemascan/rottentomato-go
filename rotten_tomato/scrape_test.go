@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func testScrapeActors(t *testing.T) {
+func testScrapeActors(t *testing.T, proxyUrl string) {
 	expected := []RTSchemaPerson{
 		{
 			Name:  "Keanu Reeves",
@@ -36,14 +36,14 @@ func testScrapeActors(t *testing.T) {
 			Image: "https://resizing.flixster.com/G0MMX7KZ0DZG0rxtg6UwxdK-sMM=/100x120/v2/https://flxt.tmsimg.com/assets/32287_v9_bb.jpg",
 		},
 	}
-	actors, err := GetActors("the matrix", 1999, 5, "")
+	actors, err := GetActors("the matrix", 1999, 5, proxyUrl)
 	if err != nil {
 		t.Fatalf("error occurred while scraping `the matrix` actors: %+v", err)
 	}
 	assert.Equal(t, actors, expected)
 }
 
-func testScrapeDirectors(t *testing.T) {
+func testScrapeDirectors(t *testing.T, proxyUrl string) {
 	expected := []RTSchemaPerson{
 		{
 			Name:  "Lilly Wachowski",
@@ -56,7 +56,7 @@ func testScrapeDirectors(t *testing.T) {
 			Image: "https://resizing.flixster.com/nIZRovwZGWwrmpbqjmsUrFa9HgI=/100x120/v2/https://flxt.tmsimg.com/assets/150673_v9_ba.jpg",
 		},
 	}
-	directors, err := GetDirectors("the matrix", 1999, 0, "")
+	directors, err := GetDirectors("the matrix", 1999, 0, proxyUrl)
 	if err != nil {
 		t.Fatalf("error occurred while scraping `the matrix` directors: %+v", err)
 	}
@@ -64,6 +64,8 @@ func testScrapeDirectors(t *testing.T) {
 }
 
 func TestScrapeMovieInfo(t *testing.T) {
+	// proxyUrl := os.Getenv("SCRAPE_PROXY_URL")
+	proxyUrl := "http://qfoidkns-rotate:wywrcwx7jx6k@p.webshare.io:80/"
 	expectedMoveInfos := []RTMovieInfo{
 		{
 			Title:   "The Matrix",
@@ -95,7 +97,7 @@ func TestScrapeMovieInfo(t *testing.T) {
 	}
 
 	for _, expectedMoveInfo := range expectedMoveInfos {
-		movieInfo, err := GetMovieInfo(expectedMoveInfo.Title, expectedMoveInfo.Year, "")
+		movieInfo, err := GetMovieInfo(expectedMoveInfo.Title, expectedMoveInfo.Year, proxyUrl)
 		if err != nil {
 			log.Fatalf("Error: %v", err.Error())
 		}

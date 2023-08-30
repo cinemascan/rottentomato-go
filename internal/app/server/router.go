@@ -39,7 +39,7 @@ func invalidRouteHandler() gin.HandlerFunc {
 // @Summary ping example
 // @Schemes
 // @Description do ping
-// @Tags example
+// @Tags ping
 // @Accept json
 // @Produce json
 // @Success 200 {string} pong
@@ -54,7 +54,7 @@ func pingHandler() gin.HandlerFunc {
 // @Summary top search result scraped from rotten tomato
 // @Schemes
 // @Description scrapes https://rottentomatoes.com/search url and returns the top result that matches title, year params provided
-// @Tags search
+// @Tags movie
 // @Accept json
 // @Produce json
 // @Param title query string false "movie title" minlength(1)
