@@ -24,7 +24,7 @@ func NewRouter() *gin.Engine {
 	// TODO: add routes
 	router.NoRoute(invalidRouteHandler())
 	router.GET("/ping", pingHandler())
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler, ginSwagger.URL("http://localhost:8081/swagger/doc.json")))
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	router.GET("/movie", movieInfoHandler(proxyUrl))
 	return router
 }
