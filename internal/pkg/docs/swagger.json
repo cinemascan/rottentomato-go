@@ -36,7 +36,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "title year",
+                        "description": "Movie info includinng title, release year, genres, runtime, rating and rotten tomato scores",
                         "schema": {
                             "$ref": "#/definitions/rotten_tomato.RTMovieInfo"
                         }
