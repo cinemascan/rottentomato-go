@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/cinemascan/rottentomato-go/internal/pkg/rotten_tomato"
+	"github.com/cinemascan/rottentomato-go/rotten_tomato"
 	"github.com/gin-gonic/gin"
 )
 
