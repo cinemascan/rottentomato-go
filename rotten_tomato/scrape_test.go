@@ -65,7 +65,7 @@ func testScrapeDirectors(t *testing.T, proxyUrl string) {
 
 func TestScrapeMovieInfo(t *testing.T) {
 	// proxyUrl := os.Getenv("SCRAPE_PROXY_URL")
-	proxyUrl := "http://qfoidkns-rotate:wywrcwx7jx6k@p.webshare.io:80/"
+	// proxyUrl := "http://qfoidkns-rotate:wywrcwx7jx6k@p.webshare.io:80/"
 	expectedMoveInfos := []RTMovieInfo{
 		{
 			Title:   "The Matrix",
@@ -97,7 +97,7 @@ func TestScrapeMovieInfo(t *testing.T) {
 	}
 
 	for _, expectedMoveInfo := range expectedMoveInfos {
-		movieInfo, err := GetMovieInfo(expectedMoveInfo.Title, expectedMoveInfo.Year, proxyUrl)
+		movieInfo, err := GetMovieInfo(expectedMoveInfo.Title, expectedMoveInfo.Year, "")
 		if err != nil {
 			log.Fatalf("Error: %v", err.Error())
 		}

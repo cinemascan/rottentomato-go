@@ -17,7 +17,5 @@ jobs:
           cache-dependency-path: go.sum
           check-latest: true
           cache: true
-      - name: Install swag 
-        run: go install github.com/swaggo/swag/cmd/swag@latest
       - name: Runs CI via Makefile
         run: make ci
