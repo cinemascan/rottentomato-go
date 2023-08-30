@@ -1,0 +1,86 @@
+definitions:
+  rotten_tomato.RTMovieInfo:
+    properties:
+      audienceScore:
+        $ref: '#/definitions/rotten_tomato.RTScore'
+      genres:
+        items:
+          type: string
+        type: array
+      rating:
+        type: string
+      runtime:
+        type: string
+      title:
+        type: string
+      tomatometerScore:
+        $ref: '#/definitions/rotten_tomato.RTScore'
+      year:
+        type: integer
+    type: object
+  rotten_tomato.RTScore:
+    properties:
+      averageRating:
+        type: string
+      bandedRatingCount:
+        type: string
+      likedCount:
+        type: integer
+      notLikedCount:
+        type: integer
+      ratingCount:
+        type: integer
+      reviewCount:
+        type: integer
+      state:
+        type: string
+      value:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /movie:
+    get:
+      consumes:
+      - application/json
+      description: scrapes https://rottentomatoes.com/search url and returns the top
+        result that matches title, year params provided
+      parameters:
+      - description: movie title
+        in: query
+        minLength: 1
+        name: title
+        type: string
+      - description: movie release year
+        in: query
+        maximum: 2023
+        minimum: 1972
+        name: year
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: title year
+          schema:
+            $ref: '#/definitions/rotten_tomato.RTMovieInfo'
+      summary: top search result scraped from rotten tomato
+      tags:
+      - search
+  /ping:
+    get:
+      consumes:
+      - application/json
+      description: do ping
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: ping example
+      tags:
+      - example
+swagger: "2.0"

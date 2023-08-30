@@ -5,9 +5,14 @@ import (
 	"os"
 	"strconv"
 
+	_ "github.com/cinemascan/rottentomato-go/internal/pkg/docs"
 	"github.com/cinemascan/rottentomato-go/rotten_tomato"
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
+
+// @BasePath /
 
 func NewRouter() *gin.Engine {
 	router := gin.New()
@@ -19,6 +24,7 @@ func NewRouter() *gin.Engine {
 	// TODO: add routes
 	router.NoRoute(invalidRouteHandler())
 	router.GET("/ping", pingHandler())
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler, ginSwagger.URL("http://localhost:8081/swagger/doc.json")))
 	router.GET("/movie", movieInfoHandler(proxyUrl))
 	return router
 }
@@ -29,16 +35,32 @@ func invalidRouteHandler() gin.HandlerFunc {
 	}
 }
 
+// PingExample godoc
+// @Summary ping example
+// @Schemes
+// @Description do ping
+// @Tags example
+// @Accept json
+// @Produce json
+// @Success 200 {string} pong
+// @Router /ping [get]
 func pingHandler() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "pong")
 	}
 }
 
-/*
-`/search/movie` handler: returns existing movie with EXACT matching params,
-otherwise return first result from rotten tomato search (with matching year if year provided)
-*/
+// MovieSearch godoc
+// @Summary top search result scraped from rotten tomato
+// @Schemes
+// @Description scrapes https://rottentomatoes.com/search url and returns the top result that matches title, year params provided
+// @Tags search
+// @Accept json
+// @Produce json
+// @Param title query string false "movie title" minlength(1)
+// @Param year query int false "movie release year" minimum(1972) maximum(2023)
+// @Success 200 {object} rotten_tomato.RTMovieInfo "title year"
+// @Router /movie [get]
 func movieInfoHandler(proxyUrl string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		title := ctx.Query("title")
