@@ -1,5 +1,5 @@
 build:
-	make gen-docs server
+	make server
 
 server:
 	go build -o bin/server cmd/server/main.go
