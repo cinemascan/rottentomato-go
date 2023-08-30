@@ -1,5 +1,5 @@
 .vscode
-bin
+bin*
 .DS_Store
 tmp
 log
