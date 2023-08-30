@@ -1,7 +1,7 @@
 build:
 	make server
 
-rtserver:
+server:
 	go build -o bin/server cmd/server/main.go
 
 clean:
