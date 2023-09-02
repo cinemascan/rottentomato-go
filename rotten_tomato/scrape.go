@@ -157,7 +157,6 @@ func getTopResult(movieName string, year int, client *http.Client) (*SearchListi
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("results: %v", results)
 	filtered := filterSearchResults(results, movieName, year)
 	if len(filtered) > 0 {
 		return &filtered[0], nil
