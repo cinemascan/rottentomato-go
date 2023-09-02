@@ -33,3 +33,7 @@ func ReplaceAllChars(olds []string, new string, content string) string {
 	}
 	return content
 }
+
+func RemoveSpecialChars(raw string) string {
+	return regexp.MustCompile(`[^a-zA-Z0-9 ]+`).ReplaceAllString(raw, "")
+}

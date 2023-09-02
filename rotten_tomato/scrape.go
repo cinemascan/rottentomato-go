@@ -129,18 +129,23 @@ func getSearchResults(movieName string, client *http.Client) ([]SearchListing, e
 	chunks := utils.GetChunksFromString(start_tag, end_tag, content)
 	results := []SearchListing{}
 	for _, chunk := range chunks {
-		result := FromHtml(chunk)
-		results = append(results, result)
+		result, err := FromHtml(chunk)
+		if err != nil {
+			continue
+		}
+		results = append(results, *result)
 	}
 	return results, nil
 }
 
-func filterSearchResults(results []SearchListing, year int) []SearchListing {
+func filterSearchResults(results []SearchListing, movieName string, year int) []SearchListing {
 	filtered := []SearchListing{}
 	for _, res := range results {
 		if res.IsMovie {
-			if res.Year == year || year == -1 {
-				filtered = append(filtered, res)
+			if strings.EqualFold(strings.ToLower(utils.RemoveSpecialChars(res.Title)), strings.ToLower(utils.RemoveSpecialChars(movieName))) {
+				if res.Year == year || year == -1 {
+					filtered = append(filtered, res)
+				}
 			}
 		}
 	}
@@ -152,7 +157,8 @@ func getTopResult(movieName string, year int, client *http.Client) (*SearchListi
 	if err != nil {
 		return nil, err
 	}
-	filtered := filterSearchResults(results, year)
+	fmt.Printf("results: %v", results)
+	filtered := filterSearchResults(results, movieName, year)
 	if len(filtered) > 0 {
 		return &filtered[0], nil
 	}

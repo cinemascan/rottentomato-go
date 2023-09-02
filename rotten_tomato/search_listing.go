@@ -1,6 +1,7 @@
 package rotten_tomato
 
 import (
+	"fmt"
 	"log"
 	"regexp"
 	"strconv"
@@ -8,13 +9,14 @@ import (
 )
 
 type SearchListing struct {
+	Title          string
 	HasTomatometer bool
 	IsMovie        bool
 	Year           int
 	Url            string
 }
 
-func FromHtml(htmlSnippet string) SearchListing {
+func FromHtml(htmlSnippet string) (*SearchListing, error) {
 	tomato_query := "tomatometerscore"
 	tomato_loc := strings.Index(htmlSnippet, tomato_query) + len(tomato_query)
 	tomato_snippet := htmlSnippet[tomato_loc : tomato_loc+5]
@@ -24,6 +26,18 @@ func FromHtml(htmlSnippet string) SearchListing {
 		hasTomatometer = true
 	}
 
+	titleReg := regexp.MustCompile(`alt="(.*?)"`)
+	rawTitles := titleReg.FindAllString(htmlSnippet, -1)
+	titles := []string{}
+	for _, rawTitle := range rawTitles {
+		parsed := strings.ReplaceAll(strings.Split(rawTitle, "alt=")[1], `"`, "")
+		titles = append(titles, parsed)
+	}
+	if len(titles) == 0 {
+		return nil, fmt.Errorf("no valid RT titles found")
+	}
+	title := titles[0]
+
 	// get url
 	hrefReg := regexp.MustCompile(`a href="(.*?)"`)
 	hrefs := hrefReg.FindAllString(htmlSnippet, -1)
@@ -32,12 +46,10 @@ func FromHtml(htmlSnippet string) SearchListing {
 		url := strings.ReplaceAll(strings.Split(href, "href=")[1], `"`, "")
 		urls = append(urls, url)
 	}
-	var url string
-	if len(urls) > 0 {
-		url = urls[0]
-	} else {
-		url = ""
+	if len(urls) == 0 {
+		return nil, fmt.Errorf("no valid RT urls found")
 	}
+	url := urls[0]
 
 	// get year
 	yearReg := regexp.MustCompile(`releaseyear="(.*?)"`)
@@ -55,12 +67,10 @@ func FromHtml(htmlSnippet string) SearchListing {
 		}
 		years = append(years, year)
 	}
-	var year int
-	if len(years) > 0 {
-		year = years[0]
-	} else {
-		year = -1
+	if len(years) == 0 {
+		return nil, fmt.Errorf("no valid RT years found")
 	}
+	year := years[0]
 
 	// get movie type
 	isMovie := false
@@ -69,10 +79,11 @@ func FromHtml(htmlSnippet string) SearchListing {
 		isMovie = true
 	}
 
-	return SearchListing{
+	return &SearchListing{
+		Title:          title,
 		HasTomatometer: hasTomatometer,
 		IsMovie:        isMovie,
 		Url:            url,
 		Year:           year,
-	}
+	}, nil
 }
