@@ -2,6 +2,7 @@ package rotten_tomato
 
 import (
 	"fmt"
+	"html"
 	"log"
 	"regexp"
 	"strconv"
@@ -30,7 +31,7 @@ func FromHtml(htmlSnippet string) (*SearchListing, error) {
 	rawTitles := titleReg.FindAllString(htmlSnippet, -1)
 	titles := []string{}
 	for _, rawTitle := range rawTitles {
-		parsed := strings.ReplaceAll(strings.Split(rawTitle, "alt=")[1], `"`, "")
+		parsed := html.UnescapeString(strings.ReplaceAll(strings.Split(rawTitle, "alt=")[1], `"`, ""))
 		titles = append(titles, parsed)
 	}
 	if len(titles) == 0 {
