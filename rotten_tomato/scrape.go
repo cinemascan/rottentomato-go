@@ -143,7 +143,7 @@ func filterSearchResults(results []SearchListing, movieName string, year int) []
 	for _, res := range results {
 		if res.IsMovie {
 			if strings.EqualFold(strings.ToLower(utils.RemoveSpecialChars(res.Title)), strings.ToLower(utils.RemoveSpecialChars(movieName))) {
-				if res.Year == year || year == -1 {
+				if res.Year == year {
 					filtered = append(filtered, res)
 				}
 			}

@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	_ "github.com/cinemascan/rottentomato-go/internal/pkg/docs"
 	"github.com/cinemascan/rottentomato-go/rotten_tomato"
@@ -73,7 +74,7 @@ func movieInfoHandler(proxyUrl string) gin.HandlerFunc {
 			return
 		}
 
-		year := -1
+		year := time.Now().Year()
 		var err error
 		if yearParam != "" {
 			year, err = strconv.Atoi(yearParam)
@@ -102,7 +103,7 @@ func movieInfoHandler(proxyUrl string) gin.HandlerFunc {
 			return
 		}
 		// reject if incorrect year
-		if year != -1 && scrapedRtInfo.Year != year {
+		if scrapedRtInfo.Year != year {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"error": "no valid results found",
 			})
