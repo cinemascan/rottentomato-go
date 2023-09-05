@@ -141,12 +141,8 @@ func getSearchResults(movieName string, client *http.Client) ([]SearchListing, e
 func filterSearchResults(results []SearchListing, movieName string, year int) []SearchListing {
 	filtered := []SearchListing{}
 	for _, res := range results {
-		if res.IsMovie {
-			if strings.EqualFold(strings.ToLower(utils.RemoveSpecialChars(res.Title)), strings.ToLower(utils.RemoveSpecialChars(movieName))) {
-				if res.Year == year {
-					filtered = append(filtered, res)
-				}
-			}
+		if res.IsMovie && res.Year == year && strings.EqualFold(strings.ToLower(utils.RemoveSpecialChars(res.Title)), strings.ToLower(utils.RemoveSpecialChars(movieName))) {
+			filtered = append(filtered, res)
 		}
 	}
 	return filtered
