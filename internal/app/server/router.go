@@ -60,7 +60,7 @@ func pingHandler() gin.HandlerFunc {
 // @Produce json
 // @Param title query string false "movie title" minlength(1)
 // @Param year query int false "movie release year" minimum(1972) maximum(2023)
-// @Success 200 {object} rotten_tomato.RTMovieInfo "Movie info includinng title, release year, genres, runtime, rating and rotten tomato scores"
+// @Success 200 {object} rotten_tomato.RTMovieInfo "Movie info including title, release year, genres, runtime, rating and rotten tomato scores"
 // @Router /movie [get]
 func movieInfoHandler(proxyUrl string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
