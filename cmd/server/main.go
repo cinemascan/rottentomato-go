@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/cinemascan/rottentomato-go/internal/app/server"
+	"github.com/cinemascan/rottentomato-server/internal/app/server"
 )
 
 func main() {

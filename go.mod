@@ -1,4 +1,4 @@
-module github.com/cinemascan/rottentomato-go
+module github.com/cinemascan/rottentomato-server
 
 go 1.20
 

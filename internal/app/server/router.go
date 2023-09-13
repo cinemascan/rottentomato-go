@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	_ "github.com/cinemascan/rottentomato-go/internal/pkg/docs"
 	"github.com/cinemascan/rottentomato-go/rotten_tomato"
+	_ "github.com/cinemascan/rottentomato-server/internal/pkg/docs"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
