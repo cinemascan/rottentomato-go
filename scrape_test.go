@@ -8,6 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var MATRIX_YEAR = 1999
+
 func testScrapeActors(t *testing.T, proxyUrl string) {
 	expected := []RTSchemaPerson{
 		{
@@ -36,7 +38,7 @@ func testScrapeActors(t *testing.T, proxyUrl string) {
 			Image: "https://resizing.flixster.com/G0MMX7KZ0DZG0rxtg6UwxdK-sMM=/100x120/v2/https://flxt.tmsimg.com/assets/32287_v9_bb.jpg",
 		},
 	}
-	actors, err := GetActors("the matrix", 1999, 5, proxyUrl)
+	actors, err := GetActors("the matrix", &MATRIX_YEAR, 5, proxyUrl)
 	if err != nil {
 		t.Fatalf("error occurred while scraping `the matrix` actors: %+v", err)
 	}
@@ -56,7 +58,7 @@ func testScrapeDirectors(t *testing.T, proxyUrl string) {
 			Image: "https://resizing.flixster.com/nIZRovwZGWwrmpbqjmsUrFa9HgI=/100x120/v2/https://flxt.tmsimg.com/assets/150673_v9_ba.jpg",
 		},
 	}
-	directors, err := GetDirectors("the matrix", 1999, 0, proxyUrl)
+	directors, err := GetDirectors("the matrix", &MATRIX_YEAR, 0, proxyUrl)
 	if err != nil {
 		t.Fatalf("error occurred while scraping `the matrix` directors: %+v", err)
 	}
@@ -95,7 +97,7 @@ func TestScrapeMovieInfo(t *testing.T) {
 	}
 
 	for _, expectedMoveInfo := range expectedMoveInfos {
-		movieInfo, err := GetMovieInfo(expectedMoveInfo.Title, expectedMoveInfo.Year, "")
+		movieInfo, err := GetMovieInfo(expectedMoveInfo.Title, &expectedMoveInfo.Year, "")
 		if err != nil {
 			log.Fatalf("Error: %v", err.Error())
 		}

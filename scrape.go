@@ -136,17 +136,21 @@ func getSearchResults(movieName string, client *http.Client) ([]SearchListing, e
 	return results, nil
 }
 
-func filterSearchResults(results []SearchListing, movieName string, year int) []SearchListing {
+func filterSearchResults(results []SearchListing, movieName string, year *int) []SearchListing {
 	filtered := []SearchListing{}
 	for _, res := range results {
-		if res.IsMovie && res.Year == year && strings.EqualFold(strings.ToLower(RemoveSpecialChars(res.Title)), strings.ToLower(RemoveSpecialChars(movieName))) {
-			filtered = append(filtered, res)
+		if res.IsMovie && strings.EqualFold(strings.ToLower(RemoveSpecialChars(res.Title)), strings.ToLower(RemoveSpecialChars(movieName))) {
+			if year == nil {
+				filtered = append(filtered, res)
+			} else if res.Year == *year {
+				filtered = append(filtered, res)
+			}
 		}
 	}
 	return filtered
 }
 
-func getTopResult(movieName string, year int, client *http.Client) (*SearchListing, error) {
+func getTopResult(movieName string, year *int, client *http.Client) (*SearchListing, error) {
 	results, err := getSearchResults(movieName, client)
 	if err != nil {
 		return nil, err
@@ -158,7 +162,7 @@ func getTopResult(movieName string, year int, client *http.Client) (*SearchListi
 	return nil, errors.New("no valid results found")
 }
 
-func scrapeViaNameYear(movieName string, year int, proxyUrl string) (string, error) {
+func scrapeViaNameYear(movieName string, year *int, proxyUrl string) (string, error) {
 	var client http.Client
 	if proxyUrl != "" {
 		proxy, err := url.Parse(os.Getenv("SCRAPE_PROXY_URL"))
@@ -213,7 +217,7 @@ func scrapeViaUrl(movieName string) (string, error) {
 	return strBody, nil
 }
 
-func GetMovieInfo(movieName string, year int, proxyUrl string) (*RTMovieInfo, error) {
+func GetMovieInfo(movieName string, year *int, proxyUrl string) (*RTMovieInfo, error) {
 	content, err := scrapeViaNameYear(movieName, year, proxyUrl)
 	if err != nil {
 		return nil, err
@@ -225,7 +229,7 @@ func GetMovieInfo(movieName string, year int, proxyUrl string) (*RTMovieInfo, er
 	return details, nil
 }
 
-func GetMovieTitle(movieName string, year int, proxyUrl string) (string, error) {
+func GetMovieTitle(movieName string, year *int, proxyUrl string) (string, error) {
 	content, err := scrapeViaNameYear(movieName, year, proxyUrl)
 	if err != nil {
 		return "", err
@@ -238,7 +242,7 @@ func GetMovieTitle(movieName string, year int, proxyUrl string) (string, error) 
 	return title, nil
 }
 
-func GetGenres(movieName string, year int, proxyUrl string) ([]string, error) {
+func GetGenres(movieName string, year *int, proxyUrl string) ([]string, error) {
 	content, err := scrapeViaNameYear(movieName, year, proxyUrl)
 	if err != nil {
 		return []string{}, err
@@ -250,7 +254,7 @@ func GetGenres(movieName string, year int, proxyUrl string) ([]string, error) {
 	return schemaJson.Genre, nil
 }
 
-func GetActors(movieName string, year int, maxActors int, proxyUrl string) ([]RTSchemaPerson, error) {
+func GetActors(movieName string, year *int, maxActors int, proxyUrl string) ([]RTSchemaPerson, error) {
 	content, err := scrapeViaNameYear(movieName, year, proxyUrl)
 	if err != nil {
 		return []RTSchemaPerson{}, err
@@ -268,7 +272,7 @@ func GetActors(movieName string, year int, maxActors int, proxyUrl string) ([]RT
 	return filtered, nil
 }
 
-func GetDirectors(movieName string, year int, maxDirectors int, proxyUrl string) ([]RTSchemaPerson, error) {
+func GetDirectors(movieName string, year *int, maxDirectors int, proxyUrl string) ([]RTSchemaPerson, error) {
 	content, err := scrapeViaNameYear(movieName, year, proxyUrl)
 	if err != nil {
 		return []RTSchemaPerson{}, err
