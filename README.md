@@ -24,7 +24,7 @@ Basic usage example:
 
 ```go
 import (¯
-    "github.com/cinemascan/rottentomato-go/rotten_tomato"
+    rotten_tomato "github.com/cinemascan/rottentomato-go"
 )
 
 movieName := "The Matrix"
