@@ -4,10 +4,9 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"time"
 
-	"github.com/cinemascan/rottentomato-go/rotten_tomato"
-	_ "github.com/cinemascan/rottentomato-server/internal/pkg/docs"
+	rotten_tomato "github.com/cinemascan/rottentomato-go"
+	_ "github.com/cinemascan/rottentomato-server/internal/docs"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -74,7 +73,7 @@ func movieInfoHandler(proxyUrl string) gin.HandlerFunc {
 			return
 		}
 
-		year := time.Now().Year()
+		var year int
 		var err error
 		if yearParam != "" {
 			year, err = strconv.Atoi(yearParam)
@@ -88,7 +87,7 @@ func movieInfoHandler(proxyUrl string) gin.HandlerFunc {
 		}
 
 		// attempt to scrape
-		scrapedRtInfo, err := rotten_tomato.GetMovieInfo(title, year, proxyUrl)
+		scrapedRtInfo, err := rotten_tomato.GetMovieInfo(title, &year, proxyUrl)
 		if err != nil {
 			ctx.Error(err)
 			ctx.JSON(http.StatusBadRequest, gin.H{
